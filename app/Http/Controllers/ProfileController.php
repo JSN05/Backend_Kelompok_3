@@ -22,7 +22,9 @@ class ProfileController extends Controller
         $user = $request->user();
 
         // Query posts where the username matches the user's email
-        $posts = Post::where('username', $user->email)->get();
+        $posts = Post::where('username', $user->email)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         // Pass both user and posts to the view
         return view('profile.edit', [
