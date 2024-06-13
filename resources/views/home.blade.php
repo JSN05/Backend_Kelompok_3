@@ -1,7 +1,8 @@
 <x-app-layout>
-<x-slot name="header">
-    <a href="{{ route('post.create') }}" style="border: 2px solid black; padding: 5px 10px; text-decoration: none;">Post something</a>
-</x-slot>
+    <x-slot name="header">
+        <a href="{{ route('post.create') }}"
+            style="border: 2px solid black; padding: 5px 10px; text-decoration: none;">Post something</a>
+    </x-slot>
 
 
     <div class="py-12">
@@ -12,14 +13,27 @@
                         <ul>
                             @foreach($posts as $post)
                                 <li>
-                                    <h6>{{ $post->username }}</h6>
+                                    <h6>
+                                        <!-- 13 06 2024 Michael, Link untuk visit profil start -->
+                                        @if (Auth::check() && Auth::user()->id !== $post->user->id)
+                                            <a href="{{ route('profile.visit', ['user' => $post->user->id]) }}">
+                                                {{ $post->username }}
+                                            </a>
+                                        @else
+                                            {{ $post->username }}
+                                        @endif
+                                        <!-- 13 06 2024 Michael, Link untuk visit profil end -->
+                                    </h6>
                                     <p>{{ $post->created_at }}</p>
                                     <p>{{ $post->text }}</p>
-                                    <form action="{{ route('post.destroy', $post->id) }}" method="POST" style="display:inline;">
-    @csrf
-    @method('DELETE')
-    <button type="submit" onclick="return confirm('Are you sure you want to delete this post?')" style="border: 2px solid black; padding: 5px 10px; background-color: white; color: black; cursor: pointer;">Delete</button>
-</form>
+                                    <form action="{{ route('post.destroy', $post->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            onclick="return confirm('Are you sure you want to delete this post?')"
+                                            style="border: 2px solid black; padding: 5px 10px; background-color: white; color: black; cursor: pointer;">Delete</button>
+                                    </form>
 
 
                                     <br>

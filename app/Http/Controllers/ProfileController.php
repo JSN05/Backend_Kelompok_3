@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 use App\Models\Post;
+use App\Models\User;
+use Response;
 
 class ProfileController extends Controller
 {
@@ -69,4 +71,34 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    /**
+     * Visit other user's profile
+     * 13 06 2024 Michael, membuat fungsi visit profil start
+     */
+    public function visit($id)
+    {
+        // Get currently authenticated user
+        $currentUser = Auth::user();
+
+        // Get the user to be visited
+        $user = User::findOrFail($id);
+
+        // Check if the current user is trying to visit their own profile
+        if ($currentUser->id === $user->id) {
+            return Redirect::to('/profile');
+        }
+
+        // Query posts where the username matches the user's email
+        $posts = Post::where('username', $user->email)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Pass both user and posts to the view
+        return view('profile.visit', [
+            'user' => $user,
+            'posts' => $posts,
+        ]);
+    }
+    //13 06 2024 Michael, membuat fungsi visit profil end
 }

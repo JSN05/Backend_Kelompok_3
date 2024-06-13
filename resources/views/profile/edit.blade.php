@@ -24,7 +24,21 @@
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
+            <!-- 13 06 2024 Michael, menampilkan follower dan following start -->
+            <h3>Followers</h3>
+            <ul>
+                @foreach($user->followers as $follower)
+                    <li>{{ $follower->name }}</li>
+                @endforeach
+            </ul>
 
+            <h3>Following</h3>
+            <ul>
+                @foreach($user->following as $following)
+                    <li>{{ $following->name }}</li>
+                @endforeach
+            </ul>
+            <!-- 13 06 2024 Michael, menampilkan follower dan following end -->
             <div>
                 <h1>Your posts</h1>
                 <ul>
