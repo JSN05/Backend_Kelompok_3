@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}">
-                        <img src="https://png.pngtree.com/templates/20180829/letter-p-and-lightning-bolt-logo-design-template-png_30063.jpg" width="100" height="100">
+                        <img src="{{ asset('images/Poster.png') }}" width="40" height="40">
                         <!-- <x-application-logo class="block h-9 w-auto fill-current text-gray-800" /> -->
                     </a>
                 </div>

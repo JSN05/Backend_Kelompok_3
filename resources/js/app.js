@@ -25,3 +25,9 @@ window.togglePasswordVisibility = function(fieldId) {
             </svg>`;
     }
 }
+
+window.updateCharCounter = function() {
+    const input = document.getElementById('text');
+    const counter = document.getElementById('char-counter');
+    counter.textContent = `${input.value.length}/300`;
+}
