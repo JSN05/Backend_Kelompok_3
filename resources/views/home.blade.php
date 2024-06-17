@@ -1,18 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <a href="{{ route('post.create') }}"
-            style="border: 2px solid black; padding: 5px 10px; text-decoration: none;">Post something</a>
+        <a href="{{ route('post.create') }}" class="bg-[#000000] hover:bg-[#666666] text-white py-2 px-4 no-underline rounded-lg">Post something</a>
     </x-slot>
 
-
-    <div class="py-12">
+    <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div>
                         <ul>
                             @foreach($posts as $post)
-                                <li>
+                                <li class="post-line">
                                     <h6>
                                         <!-- 13 06 2024 Michael, Link untuk visit profil start -->
                                         @if (Auth::check() && Auth::user()->id !== $post->user->id)
@@ -23,20 +21,9 @@
                                             {{ $post->username }}
                                         @endif
                                         <!-- 13 06 2024 Michael, Link untuk visit profil end -->
+                                        <span class="text-sm text-grey-trans">&bull; {{ $post->created_at }}</span>
                                     </h6>
-                                    <p>{{ $post->created_at }}</p>
                                     <p>{{ $post->text }}</p>
-                                    <form action="{{ route('post.destroy', $post->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            onclick="return confirm('Are you sure you want to delete this post?')"
-                                            style="border: 2px solid black; padding: 5px 10px; background-color: white; color: black; cursor: pointer;">Delete</button>
-                                    </form>
-
-
-                                    <br>
                                 </li>
                             @endforeach
                         </ul>

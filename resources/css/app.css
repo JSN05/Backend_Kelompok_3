@@ -12,3 +12,14 @@
 .button-login:hover, .button-reset-password:hover, .button-register:hover {
     background-color: #666666;
 }
+
+.post-line {
+    border-bottom: 1px solid #e2e8f0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.text-grey-trans {
+    font-weight: 100;
+    color: #9e9e9e;
+}

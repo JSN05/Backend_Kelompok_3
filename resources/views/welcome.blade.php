@@ -16,13 +16,13 @@
     <div class="content">
         <div>
             <h1 class="title">Welcome to Poster</h1>
-            <p class="subtitle">Log in and see what’s happening now</p>
         </div>
         <div class="button-container">
             @if (Route::has('login'))
                 @auth
                     <a href="{{ url('/home') }}" class="button button-home">Home</a>
                 @else
+                    <p class="subtitle">Log in and see what’s happening now</p>
                     <a href="{{ route('login') }}" class="button button-login">Log in</a>
                     @if (Route::has('register'))
                         <p class="subtitle">Register and start sharing your story</p>

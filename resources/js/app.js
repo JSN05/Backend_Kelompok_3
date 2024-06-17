@@ -31,3 +31,13 @@ window.updateCharCounter = function() {
     const counter = document.getElementById('char-counter');
     counter.textContent = `${input.value.length}/300`;
 }
+
+window.toggleFollowersList = function() {
+    const followersList = document.getElementById('followers-list');
+    followersList.classList.toggle('hidden');
+}
+
+window.toggleFollowingList = function() {
+    const followingList = document.getElementById('following-list');
+    followingList.classList.toggle('hidden');
+}
