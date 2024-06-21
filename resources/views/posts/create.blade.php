@@ -4,29 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Posting Text | Poster</title>
+    <link rel="icon" href="{{ asset('images/Poster.png') }}">
+    @vite(['resources/css/post.css', 'resources/js/app.js'])
 </head>
 
 <body>
-    <h1>Post something!</h1>
+    <div class="container">
+        <h1>Write and Share, Post Here!</h1>
 
-    <div>
         @if ($errors->any())
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{$error}}</li>
-                @endforeach
-            </ul>
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
         @endif
+
+        <form method="post" action="">
+            @csrf
+            @method('post')
+            <label for="text">Text</label>
+            <textarea name="text" id="text" maxlength="300" oninput="updateCharCounter()"></textarea>
+            <div class="char-counter" id="char-counter">0/300</div>
+            <button type="submit">Post</button>
+        </form>
     </div>
 
-    <form method="post" action="">
-        @csrf
-        @method('post')
-        <label>Text:</label>
-        <textarea name="text"></textarea>
-        <button type="submit">Post</button>
-    </form>
 </body>
 
 </html>
