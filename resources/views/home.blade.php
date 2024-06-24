@@ -23,7 +23,8 @@
                                         <!-- 13 06 2024 Michael, Link untuk visit profil end -->
                                         <span class="text-sm text-grey-trans">&bull; {{ $post->created_at }}</span>
                                     </h6>
-                                    <p>{{ $post->text }}</p>
+                                    <!-- Tautan untuk mengunjungi postingan -->
+                                    <p><a href="{{ route('post.visit', ['post' => $post->id]) }}">{{ $post->text }}</a></p>
                                 </li>
                             @endforeach
                         </ul>

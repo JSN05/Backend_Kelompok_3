@@ -24,13 +24,16 @@ Route::get('/home', function () {
     return view('home', compact('posts'));
 })->middleware(['auth', 'verified'])->name('home');
 
-Route::middleware('auth')->group(function () {
+    Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     //13 06 2024 Michael, route untuk visit profile start
     Route::get('/profile/{user}', [ProfileController::class, 'visit'])->name('profile.visit');
     //13 06 2024 Michael, route untuk visit profile end
+
+    Route::get('/post/visit/{post}', [PostController::class, 'visit'])->name('post.visit');
+
 
     Route::get('/post', [PostController::class, 'create'])->name('post.create');
     Route::post('/post', [PostController::class, 'store'])->name('post.store');
