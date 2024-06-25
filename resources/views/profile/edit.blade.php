@@ -58,7 +58,7 @@
                                     {{ $post->username }} 
                                     <span class="text-sm text-grey-trans">&bull; {{ $post->created_at }}</span>
                                 </h6>
-                                <p>{{ $post->text }}</p>
+                                <p><a href="{{ route('post.visit', ['post' => $post->id]) }}">{{ $post->text }}</a></p>
                             </div>
                             <form action="{{ route('post.destroy', $post->id) }}" method="POST" style="display:inline;">
                                 @csrf
