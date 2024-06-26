@@ -2,103 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
-
 use App\Models\Post;
 use App\Models\User;
-use Response;
 
-class ProfileController extends Controller
+class PostController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    public function create()
     {
-        // Get the currently authenticated user
-        $user = $request->user();
-
-        // Query posts where the username matches the user's email
-        $posts = Post::where('username', $user->email)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        // Pass both user and posts to the view
-        return view('profile.edit', [
-            'user' => $user,
-            'posts' => $posts,
-        ]);
+        return view('posts.create');
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function store(Request $request)
     {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+        $request->validate([
+            'text' => 'required',
         ]);
 
-        $user = $request->user();
+        $post = new Post;
+        $post->username = $request->user()->email;
+        $post->text = $request->text;
+        $post->save();
 
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        return redirect(route('home'));
     }
 
-    /**
-     * Visit other user's profile
-     * 13 06 2024 Michael, membuat fungsi visit profil start
-     */
-    public function visit($id)
+    public function destroy($id)
     {
-        // Get currently authenticated user
-        $currentUser = Auth::user();
+        $post = Post::findOrFail($id);
+        $post->delete();
 
-        // Get the user to be visited
-        $user = User::findOrFail($id);
-
-        // Check if the current user is trying to visit their own profile
-        if ($currentUser->id === $user->id) {
-            return Redirect::to('/profile');
-        }
-
-        // Query posts where the username matches the user's email
-        $posts = Post::where('username', $user->email)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        // Pass both user and posts to the view
-        return view('profile.visit', [
-            'user' => $user,
-            'posts' => $posts,
-        ]);
+        return redirect()->route('home')->with('success', 'Post deleted successfully');
     }
-    //13 06 2024 Michael, membuat fungsi visit profil end
+
+    public function search(Request $request)
+{
+    $searchQuery = $request->input('find');
+
+    // Cari akun berdasarkan nama atau email
+    $users = User::where('name', 'like', '%' . $searchQuery . '%')
+                 ->orWhere('email', 'like', '%' . $searchQuery . '%')
+                 ->get();
+
+    return view('search-results', compact('users'));
+}
+
 }

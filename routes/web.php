@@ -40,7 +40,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/follow/{id}', [FollowController::class, 'follow'])->name('follow');
     Route::post('/unfollow/{id}', [FollowController::class, 'unfollow'])->name('unfollow');
     //13 06 2024 Michael, route untuk fitur follow end
+
+    //25 06 2024 William, route untuk menampilkan daftar akun di menu search bar
+    Route::get('/visit/{user}', [ProfileController::class, 'visit'])->name('visit.username');
+
 });
+
+
 
 require __DIR__ . '/auth.php';
 
