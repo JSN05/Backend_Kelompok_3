@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\FollowController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommentController;
 
 use App\Models\Post;
 use App\Models\User;
@@ -45,6 +46,10 @@ Route::get('/home', function () {
     Route::post('/follow/{id}', [FollowController::class, 'follow'])->name('follow');
     Route::post('/unfollow/{id}', [FollowController::class, 'unfollow'])->name('unfollow');
     //13 06 2024 Michael, route untuk fitur follow end
+
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->middleware('auth');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->middleware('auth');
+
 });
 
 // 23/06/2024 - Jorgen Sunari, route untuk Fitur Like
