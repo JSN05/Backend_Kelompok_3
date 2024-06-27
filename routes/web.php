@@ -34,6 +34,7 @@ Route::get('/home', function () {
     //13 06 2024 Michael, route untuk visit profile start
     Route::get('/profile/{user}', [ProfileController::class, 'visit'])->name('profile.visit');
     //13 06 2024 Michael, route untuk visit profile end
+    Route::get('/search', [ProfileController::class, 'search'])->name('search');
 
     Route::get('/post/visit/{post}', [PostController::class, 'visit'])->name('post.visit');
 
