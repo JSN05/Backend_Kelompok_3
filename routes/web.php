@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Http\Controllers\LikeController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,6 +46,10 @@ Route::get('/home', function () {
     Route::post('/unfollow/{id}', [FollowController::class, 'unfollow'])->name('unfollow');
     //13 06 2024 Michael, route untuk fitur follow end
 });
+
+// 23/06/2024 - Jorgen Sunari, route untuk Fitur Like
+Route::middleware('auth')->post('/posts/{post}/likes', [LikeController::class, 'store'])->name('likes.store');
+Route::middleware('auth')->delete('/posts/{post}/likes', [LikeController::class, 'destroy'])->name('likes.destroy');
 
 require __DIR__ . '/auth.php';
 

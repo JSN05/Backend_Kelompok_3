@@ -25,6 +25,20 @@
                                     </h6>
                                     <!-- Tautan untuk mengunjungi postingan -->
                                     <p><a href="{{ route('post.visit', ['post' => $post->id]) }}">{{ $post->text }}</a></p>
+                                    <!-- 23/06/24 Jorgen Sunari, Like button -->
+                                    <form action="{{ route('likes.store', $post->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @if ($post->likedByUser(auth()->user()))
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded">
+                                                Unlike ({{ $post->likes_count }})
+                                            </button>
+                                        @else
+                                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-3 rounded">
+                                                Like ({{ $post->likes_count }})
+                                            </button>
+                                        @endif
+                                    </form>
                                 </li>
                             @endforeach
                         </ul>
