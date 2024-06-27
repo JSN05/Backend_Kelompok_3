@@ -110,4 +110,21 @@ class ProfileController extends Controller
         ]);
     }
     //13 06 2024 Michael, membuat fungsi visit profil end
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Melakukan pencarian pengguna berdasarkan nama
+        $users = User::where('name', 'LIKE', '%' . $query . '%')->get();
+
+        // Jika hanya satu pengguna ditemukan, langsung alihkan ke profil pengguna tersebut
+        if ($users->count() === 1) {
+            $user = $users->first();
+            return $this->visit($user->id);
+        }
+
+        // Jika lebih dari satu pengguna ditemukan, tampilkan daftar pengguna
+        return redirect()->route('home'); 
+        
+    }
 }

@@ -1,6 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <a href="{{ route('post.create') }}" class="bg-[#000000] hover:bg-[#666666] text-white py-2 px-4 no-underline rounded-lg">Post something</a>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <a href="{{ route('post.create') }}" class="bg-[#000000] hover:bg-[#666666] text-white py-2 px-4 no-underline rounded-lg">
+            Post something
+        </a>
+        <div style="display: flex; justify-content: flex-end; padding: 10px;"></div>
+        <form action="{{ route('search') }}" method="GET" class="ml-4 flex" style="display: flex; align-items: center; position: relative;">
+                <input type="text" name="query" placeholder="Search Account" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500" />
+                <button type="submit" id="searchButton" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: none; border: none;">
+        <img src="images/SearchIcon.png" alt="Search Icon" style="width: 20px; height: 20px; margin-right: 10px;">
+    </button>
+            </form>
+        </div>
     </x-slot>
 
     <div class="py-6">
