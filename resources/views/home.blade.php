@@ -6,9 +6,9 @@
         </a>
         <div style="display: flex; justify-content: flex-end; padding: 10px;"></div>
         <form action="{{ route('search') }}" method="GET" class="ml-4 flex" style="display: flex; align-items: center; position: relative;">
-                <input type="text" name="query" placeholder="Search Account" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500" />
+                <input type="text" name="query" placeholder="Search Name Account" class="px-3 pr-8 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500" />
                 <button type="submit" id="searchButton" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: none; border: none;">
-        <img src="images/SearchIcon.png" alt="Search Icon" style="width: 20px; height: 20px; margin-right: 10px;">
+        <img src="images/SearchIcon.png" alt="Search Icon" style="width: 15px; height: 15px; margin-right: 10px;">
     </button>
             </form>
         </div>
