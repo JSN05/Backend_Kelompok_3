@@ -40,6 +40,8 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        $user = $request->user();
+        $oldEmail = $user->email;
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
@@ -47,6 +49,12 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+
+        
+        if ($user->isDirty('email')) {
+            Post::where('username', $oldEmail)
+                ->update(['username' => $user->email]);
+        }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
@@ -61,6 +69,7 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        Post::where('username', $user->email)->delete();
 
         Auth::logout();
 

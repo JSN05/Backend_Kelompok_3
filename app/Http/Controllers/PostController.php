@@ -33,4 +33,21 @@ class PostController extends Controller
 
         return redirect()->route('home')->with('success', 'Post deleted successfully');
     }
+
+   
+    public function visit($id)
+    {
+        // Ambil data postingan berdasarkan ID
+        $post = Post::findOrFail($id);
+
+        // Ambil user yang memiliki postingan ini
+        $user = $post->user;
+
+        // Kirim data user dan post ke view 'post.visit-post'
+        return view('posts.visit-post', [
+            'username' => $user,
+            'post' => $post,
+        ]);
+    
+}
 }

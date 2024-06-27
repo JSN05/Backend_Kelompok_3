@@ -59,4 +59,9 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id');
     }
     //13 06 2024 Michael, fitur follower end
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
