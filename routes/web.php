@@ -24,13 +24,17 @@ Route::get('/home', function () {
     return view('home', compact('posts'));
 })->middleware(['auth', 'verified'])->name('home');
 
-Route::middleware('auth')->group(function () {
+    Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     //13 06 2024 Michael, route untuk visit profile start
     Route::get('/profile/{user}', [ProfileController::class, 'visit'])->name('profile.visit');
     //13 06 2024 Michael, route untuk visit profile end
+    Route::get('/search', [ProfileController::class, 'search'])->name('search');
+
+    Route::get('/post/visit/{post}', [PostController::class, 'visit'])->name('post.visit');
+
 
     Route::get('/post', [PostController::class, 'create'])->name('post.create');
     Route::post('/post', [PostController::class, 'store'])->name('post.store');
@@ -41,12 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/unfollow/{id}', [FollowController::class, 'unfollow'])->name('unfollow');
     //13 06 2024 Michael, route untuk fitur follow end
 
-    //25 06 2024 William, route untuk menampilkan daftar akun di menu search bar
-    Route::get('/visit/{user}', [ProfileController::class, 'visit'])->name('visit.username');
+    Route::get('/post', [PostController::class, 'create'])->name('post.create');
 
 });
-
-
 
 require __DIR__ . '/auth.php';
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-use App\Models\User;
 
 class PostController extends Controller
 {
@@ -35,16 +34,20 @@ class PostController extends Controller
         return redirect()->route('home')->with('success', 'Post deleted successfully');
     }
 
-    public function search(Request $request)
-{
-    $searchQuery = $request->input('find');
+   
+    public function visit($id)
+    {
+        // Ambil data postingan berdasarkan ID
+        $post = Post::findOrFail($id);
 
-    // Cari akun berdasarkan nama atau email
-    $users = User::where('name', 'like', '%' . $searchQuery . '%')
-                 ->orWhere('email', 'like', '%' . $searchQuery . '%')
-                 ->get();
+        // Ambil user yang memiliki postingan ini
+        $user = $post->user;
 
-    return view('search-results', compact('users'));
+        // Kirim data user dan post ke view 'post.visit-post'
+        return view('posts.visit-post', [
+            'username' => $user,
+            'post' => $post,
+        ]);
+    
 }
-
 }

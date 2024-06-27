@@ -40,6 +40,8 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        $user = $request->user();
+        $oldEmail = $user->email;
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
@@ -47,6 +49,12 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+
+        
+        if ($user->isDirty('email')) {
+            Post::where('username', $oldEmail)
+                ->update(['username' => $user->email]);
+        }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
@@ -61,6 +69,7 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        Post::where('username', $user->email)->delete();
 
         Auth::logout();
 
@@ -76,16 +85,8 @@ class ProfileController extends Controller
      * Visit other user's profile
      * 13 06 2024 Michael, membuat fungsi visit profil start
      */
-    public function visit(Request $request, $id)
+    public function visit($id)
     {
-        // Cek apakah parameter 'find' ada dalam request
-        if ($request->has('find')) {
-        // Jika ada, arahkan ke profil berdasarkan nama pengguna
-        $username = $request->input('find');
-        $user = User::where('name', $username)->firstOrFail();
-        return redirect()->route('profile.visit', ['user' => $user->id]);
-        }
-
         // Get currently authenticated user
         $currentUser = Auth::user();
 
@@ -109,38 +110,21 @@ class ProfileController extends Controller
         ]);
     }
     //13 06 2024 Michael, membuat fungsi visit profil end
-
-
-    public function visit(Request $request, $id)
+    public function search(Request $request)
     {
-        // Cek apakah parameter 'find' ada dalam request
-        if ($request->has('find')) {
-            // Jika ada, arahkan ke profil berdasarkan nama pengguna
-            $username = $request->input('find');
-            $user = User::where('name', $username)->firstOrFail();
-            return redirect()->route('visit.username', ['user' => $user->id]);
+        $query = $request->input('query');
+
+        // Melakukan pencarian pengguna berdasarkan nama
+        $users = User::where('name', 'LIKE', '%' . $query . '%')->get();
+
+        // Jika hanya satu pengguna ditemukan, langsung alihkan ke profil pengguna tersebut
+        if ($users->count() === 1) {
+            $user = $users->first();
+            return $this->visit($user->id);
         }
 
-        // Get currently authenticated user
-        $currentUser = Auth::user();
-
-        // Get the user to be visited
-        $user = User::findOrFail($id);
-
-        // Check if the current user is trying to visit their own profile
-        if ($currentUser->id === $user->id) {
-            return Redirect::to('/profile');
-        }
-
-        // Query posts where the username matches the user's email
-        $posts = Post::where('username', $user->email)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        // Pass both user and posts to the view
-        return view('profile.visit', [
-            'user' => $user,
-            'posts' => $posts,
-        ]);
+        // Jika lebih dari satu pengguna ditemukan, tampilkan daftar pengguna
+        return redirect()->route('home'); 
+        
     }
 }
